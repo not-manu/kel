@@ -14,7 +14,8 @@ export const db = drizzle(databaseUrl, { schema })
 export async function runMigrations() {
   const migrationsPath = app.isPackaged
     ? join(process.resourcesPath, 'drizzle')
-    : join(__dirname, '../../..', 'drizzle')
+    : join(__dirname, '..', '..', 'drizzle')
+
 
   // Only run migrations if the folder exists
   if (existsSync(join(migrationsPath, 'meta', '_journal.json'))) {

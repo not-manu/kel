@@ -1,2 +1,2 @@
 // Export all table schemas
-export * from './tables/users';
+export * from './tables/settings';
