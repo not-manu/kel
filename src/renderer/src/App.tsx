@@ -1,12 +1,8 @@
-import Versions from './components/Versions'
-import electronLogo from './assets/electron.svg'
-
 function App(): React.JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
-
   return (
-    <div className='p-20 font-[450] antialiased font-sans'>
-      Hello World.
+    <div className="my-20 p-4">
+      <div className="font-[450] antialiased font-serif text-2xl">Good evening, Manu.</div>
+      <div className="font-[450] antialiased font-serif text-2xl opacity-50">What should we work on?</div>
     </div>
   )
 }
