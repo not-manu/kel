@@ -17,6 +17,13 @@ export interface SettingsApi {
   update: (data: UpdateData) => Promise<Settings | null>
 }
 
+export function createSettingsApi(ipcRenderer: any): SettingsApi {
+  return {
+    get: () => ipcRenderer.invoke('settings:get'),
+    update: (data) => ipcRenderer.invoke('settings:update', data)
+  }
+}
+
 export function registerSettingsApi() {
   ipcMain.handle('settings:get', async (): Promise<Settings | null> => {
     const result = await db.select().from(settings).limit(1)

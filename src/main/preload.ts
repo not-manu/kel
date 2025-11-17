@@ -1,12 +1,9 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import type { SettingsApi } from './api/settings'
+import { createSettingsApi } from './api/settings'
 
 const api = {
-  settings: {
-    get: () => ipcRenderer.invoke('settings:get'),
-    update: (data) => ipcRenderer.invoke('settings:update', data)
-  } as SettingsApi
+  settings: createSettingsApi(ipcRenderer)
 }
 
 export function exposeApi() {
