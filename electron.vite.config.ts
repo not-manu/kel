@@ -16,6 +16,7 @@ export default defineConfig({
         '@renderer': resolve('src/renderer/src')
       }
     },
+    // @ts-ignore tailwindcss has no types
     plugins: [react(), tailwindcss()]
   }
 })
