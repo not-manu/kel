@@ -34,7 +34,7 @@ function createWindow(): void {
     skipTaskbar: true,
     alwaysOnTop: true,
     autoHideMenuBar: true,
-    backgroundColor: '#100F0F',
+    transparent: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -51,15 +51,8 @@ function createWindow(): void {
     // Don't show automatically - wait for the global shortcut
   })
 
-  mainWindow.on('blur', () => {
-    // Hide window when it loses focus (Raycast-like behavior)
-    // Small delay to prevent hiding when we're intentionally not taking focus
-    setTimeout(() => {
-      if (mainWindow && !mainWindow.isDestroyed() && !mainWindow.isFocused()) {
-        mainWindow.hide()
-      }
-    }, 100)
-  })
+  // Remove blur handler - window will only hide when shortcut is pressed again
+  // This matches Raycast behavior where clicking outside doesn't hide the window
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
