@@ -28,8 +28,8 @@ function createWindow(): void {
     skipTaskbar: true,
     alwaysOnTop: true,
     autoHideMenuBar: true,
+    backgroundColor: '#100F0F',
     transparent: true,
-    vibrancy: 'under-window',
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
