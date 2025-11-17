@@ -12,6 +12,11 @@ export interface UpdateData {
   apiKeyType?: 'Openrouter' | 'Anthropic' | null
 }
 
+export interface SettingsApi {
+  get: () => Promise<Settings | null>
+  update: (data: UpdateData) => Promise<Settings | null>
+}
+
 export function registerSettingsApi() {
   ipcMain.handle('settings:get', async (): Promise<Settings | null> => {
     const result = await db.select().from(settings).limit(1)

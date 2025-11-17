@@ -1,13 +1,11 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
+import type { SettingsApi } from './api/settings'
 
 declare global {
   interface Window {
     electron: ElectronAPI
     api: {
-      settings: {
-        get: () => Promise<any>
-        update: (data: any) => Promise<any>
-      }
+      settings: SettingsApi
     }
   }
 }
