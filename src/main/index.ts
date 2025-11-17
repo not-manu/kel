@@ -22,7 +22,7 @@ function createWindow(): void {
     show: false,
     frame: false,
     resizable: true,
-    movable: true,
+    movable: false,
     minimizable: false,
     maximizable: false,
     fullscreenable: false,
