@@ -45,33 +45,21 @@
   --font-serif: var(--font-serif);
   --font-display: var(--font-display);
 
-  /* Gray Light */
-  --color-g-1: color(display-p3 0.988 0.988 0.988);
-  --color-g-2: color(display-p3 0.975 0.975 0.975);
-  --color-g-3: color(display-p3 0.939 0.939 0.939);
-  --color-g-4: color(display-p3 0.908 0.908 0.908);
-  --color-g-5: color(display-p3 0.88 0.88 0.88);
-  --color-g-6: color(display-p3 0.849 0.849 0.849);
-  --color-g-7: color(display-p3 0.807 0.807 0.807);
-  --color-g-8: color(display-p3 0.732 0.732 0.732);
-  --color-g-9: color(display-p3 0.553 0.553 0.553);
-  --color-g-10: color(display-p3 0.512 0.512 0.512);
-  --color-g-11: color(display-p3 0.392 0.392 0.392);
-  --color-g-12: color(display-p3 0.125 0.125 0.125);
+  --color-f-black: #100F0F;
+  --color-f-950: #1C1B1A;
+  --color-f-900: #282726;
+  --color-f-850: #343331;
+  --color-f-800: #403E3C;
+  --color-f-700: #575653;
+  --folor-f-600: #6F6E69;
+  --color-f-500: #878580;
+  --color-f-300: #B7B5AC;
+  --color-f-200: #CECDC3;
+  --color-f-150: #DAD8CE;
+  --color-f-100: #E6E4D9;
+  --color-f-50: #F2F0E5;
+  --color-f-paper: #FFFCF0;
 
-  /* Gray Dark */
-  --color-gd-1: color(display-p3 0.067 0.067 0.067);
-  --color-gd-2: color(display-p3 0.098 0.098 0.098);
-  --color-gd-3: color(display-p3 0.135 0.135 0.135);
-  --color-gd-4: color(display-p3 0.163 0.163 0.163);
-  --color-gd-5: color(display-p3 0.192 0.192 0.192);
-  --color-gd-6: color(display-p3 0.228 0.228 0.228);
-  --color-gd-7: color(display-p3 0.283 0.283 0.283);
-  --color-gd-8: color(display-p3 0.375 0.375 0.375);
-  --color-gd-9: color(display-p3 0.431 0.431 0.431);
-  --color-gd-10: color(display-p3 0.484 0.484 0.484);
-  --color-gd-11: color(display-p3 0.706 0.706 0.706);
-  --color-gd-12: color(display-p3 0.933 0.933 0.933);
 
   /* Custom Classes */
   --breakpoint-xs: 400px;
@@ -79,12 +67,12 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: rgb(16, 15, 15);
-  --card: oklch(1 0 0);
-  --card-foreground: rgb(16, 15, 15);
-  --popover: oklch(1 0 0);
-  --popover-foreground: rgb(16, 15, 15);
+  --background: var(--color-f-paper);
+  --foreground: var(--color-f-black);
+  --card: var(--color-f-paper);
+  --card-foreground: var(--color-f-black);
+  --popover: var(--color-f-paper);
+  --popover-foreground: var(--color-f-black);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
@@ -104,7 +92,7 @@
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: rgb(16, 15, 15);
+  --sidebar-foreground: var(--color-f-black);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
@@ -117,7 +105,7 @@
 }
 
 .dark {
-  --background: rgb(16, 15, 15);
+  --background: var(--color-f-black);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);

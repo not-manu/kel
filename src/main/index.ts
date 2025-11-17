@@ -29,7 +29,7 @@ function createWindow(): void {
     alwaysOnTop: true,
     autoHideMenuBar: true,
     backgroundColor: '#100F0F',
-    transparent: true,
+    transparent: false,
     roundedCorners: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
