@@ -29,6 +29,8 @@ function createWindow(): void {
     alwaysOnTop: true,
     autoHideMenuBar: true,
     transparent: true,
+    vibrancy: 'sidebar',
+    visualEffectState: 'active',
     roundedCorners: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
