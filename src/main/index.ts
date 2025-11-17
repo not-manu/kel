@@ -3,6 +3,7 @@ import { app, BrowserWindow, globalShortcut, ipcMain, screen, shell } from 'elec
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
 import { runMigrations, initializeSettings } from './db'
+import { registerAllApis } from './api'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -105,6 +106,9 @@ app.whenReady().then(async () => {
   
   // Initialize settings with default values if needed
   await initializeSettings();
+
+  // Register all IPC handlers
+  registerAllApis();
 
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
