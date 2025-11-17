@@ -2,7 +2,7 @@ import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, globalShortcut, ipcMain, screen, shell } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
-import { runMigrations } from './db'
+import { runMigrations, initializeSettings } from './db'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -102,6 +102,9 @@ function toggleWindow(): void {
 app.whenReady().then(async () => {
   // Run database migrations
   await runMigrations();
+  
+  // Initialize settings with default values if needed
+  await initializeSettings();
 
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
