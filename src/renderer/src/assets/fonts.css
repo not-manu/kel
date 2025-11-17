@@ -1,7 +1,7 @@
 /* EB Garamond Font */
 @font-face {
   font-family: "EB Garamond";
-  src: url("/fonts/EBGaramond[wght].ttf") format("truetype-variations");
+  src: url("./fonts/EBGaramond[wght].ttf") format("truetype");
   font-weight: 400 800;
   font-style: normal;
   font-display: swap;
@@ -9,7 +9,7 @@
 
 @font-face {
   font-family: "EB Garamond";
-  src: url("/fonts/EBGaramond-Italic[wght].ttf") format("truetype-variations");
+  src: url("./fonts/EBGaramond-Italic[wght].ttf") format("truetype");
   font-weight: 400 800;
   font-style: italic;
   font-display: swap;
@@ -18,16 +18,16 @@
 /* Geist Font */
 @font-face {
   font-family: "Geist";
-  src: url("/fonts/Geist[wght].woff2") format("woff2-variations");
+  src: url("./fonts/Geist[wght].woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
-/* Geist Font */
+/* Inter Font */
 @font-face {
   font-family: "Inter";
-  src: url("/fonts/Inter[wght].woff2") format("woff2-variations");
+  src: url("./fonts/Inter[wght].woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -36,7 +36,7 @@
 /* JetBrains Mono Font */
 @font-face {
   font-family: "JetBrains Mono";
-  src: url("/fonts/JetBrainsMono[wght].ttf") format("truetype-variations");
+  src: url("./fonts/JetBrainsMono[wght].ttf") format("truetype");
   font-weight: 400 800;
   font-style: normal;
   font-display: swap;

@@ -5,8 +5,8 @@ function App(): React.JSX.Element {
   const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
 
   return (
-    <div>
-      Say hi!
+    <div className='p-20 font-[450] antialiased font-sans'>
+      Hello World.
     </div>
   )
 }
