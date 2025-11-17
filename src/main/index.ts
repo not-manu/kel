@@ -76,12 +76,7 @@ function toggleWindow(): void {
   if (!mainWindow) return
 
   if (mainWindow.isVisible()) {
-    // Notify renderer to start exit animation
-    mainWindow.webContents.send('window-hiding')
-    // Wait for exit animation (50ms) before actually hiding
-    setTimeout(() => {
-      if (mainWindow) mainWindow.hide()
-    }, 50)
+    mainWindow.hide()
   } else {
     // Reposition window in case screen configuration changed
     const primaryDisplay = screen.getPrimaryDisplay()
@@ -93,8 +88,6 @@ function toggleWindow(): void {
 
     mainWindow.setPosition(x, y)
     mainWindow.showInactive() // Show without taking focus
-    // Notify renderer that window is showing
-    mainWindow.webContents.send('window-showing')
   }
 }
 
