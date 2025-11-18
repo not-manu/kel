@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useFolders } from '@renderer/hooks/use-folders'
 import { useSettings } from '@renderer/hooks/use-settings'
+import { useEffect, useState } from 'react'
 
 function getMessage() {
   const hours = new Date().getHours()
@@ -18,6 +19,7 @@ const lines = ["What's on your mind today?", 'How can I assist you?', "Let's mak
 
 export function Greeting() {
   const { settings } = useSettings()
+  const { folders } = useFolders()
   const [greeting, setGreeting] = useState<string>('')
   const [randomLine, setRandomLine] = useState<string>('')
 
@@ -32,6 +34,10 @@ export function Greeting() {
         {greeting}, {settings?.preferredName || 'User'}.
       </div>
       <div className="font-[450] antialiased font-serif text-2xl text-f-500">{randomLine}</div>
+      <br />
+      <br />
+      <div className="text-xs text-f-300 font-[400] mb-3">Recents</div>
+      <pre>{JSON.stringify(folders, null, 2)}</pre>
     </div>
   )
 }
