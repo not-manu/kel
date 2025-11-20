@@ -1,13 +1,10 @@
 import { Greeting } from '@renderer/components/greeting'
 import { useChats } from '@renderer/hooks/use-chat'
-import { useSettings } from '@renderer/hooks/use-settings'
 import { useTitlebar } from '@renderer/hooks/use-titlebar'
 
 export function HomePage() {
   useTitlebar({ title: 'Kel' })
   const { chats } = useChats()
-  const { settings } = useSettings()
-  console.log(chats)
 
   return (
     <div className="flex flex-col h-[100vh]">
@@ -17,7 +14,7 @@ export function HomePage() {
       </div>
       <div className="h-8"></div>
       <div className="p-4 text-sm text-f-300">Recents</div>
-      <pre className="text-sm p-4">{JSON.stringify(settings, null, 2)}</pre>
+      <pre className="text-sm p-4">{JSON.stringify(chats, null, 2)}</pre>
       <div className='flex-grow'></div>
       <textarea
         className="resize-none p-4 bg-transparent border-t border-f-800/75 outline-none h-64 text-sm"

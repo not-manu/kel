@@ -1,6 +1,8 @@
 import { useTitlebar } from '@renderer/hooks/use-titlebar'
 import { useSettings, useAutoSaveSettings } from '@renderer/hooks/use-settings'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Loader2, AlertCircle } from 'lucide-react'
 import {
@@ -10,17 +12,18 @@ import {
   SelectTrigger,
   SelectValue
 } from '@renderer/components/ui/select'
-import { Label } from '@renderer/components/ui/label'
 import { Input } from '@renderer/components/ui/input'
-
-const updateSettingsSchema = z.object({
-  preferredName: z.string().min(1, 'Preferred name is required').max(100),
-  apiKey: z.string().min(1).max(500).nullable(),
-  apiKeyType: z.enum(['openrouter', 'anthropic']).nullable()
-})
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@renderer/components/ui/form'
+import { updateSettingsSchema } from '@shared/schemas'
 
 type SettingsForm = z.infer<typeof updateSettingsSchema>
-type FieldErrors = Partial<Record<keyof SettingsForm, string>>
 
 export function SettingsPage() {
   useTitlebar({ title: 'Kel — Settings' })
@@ -28,38 +31,28 @@ export function SettingsPage() {
   const { settings, isLoading } = useSettings()
   const { mutate, saveStatus } = useAutoSaveSettings()
 
-  const [formData, setFormData] = useState<SettingsForm>({
-    preferredName: '',
-    apiKey: null,
-    apiKeyType: null
+  const form = useForm<SettingsForm>({
+    resolver: zodResolver(updateSettingsSchema),
+    defaultValues: {
+      preferredName: '',
+      apiKey: null,
+      apiKeyType: null
+    }
   })
-  const [errors, setErrors] = useState<FieldErrors>({})
 
-  // Initialize form data when settings load
+  // Initialize form when settings load
   useEffect(() => {
     if (settings) {
-      setFormData({
+      form.reset({
         preferredName: settings.preferredName || '',
         apiKey: settings.apiKey || null,
         apiKeyType: settings.apiKeyType || null
       })
     }
-  }, [settings])
+  }, [settings, form])
 
-  const validateAndSave = (field: keyof SettingsForm, value: string | null) => {
-    const newData = { ...formData, [field]: value || null }
-    setFormData(newData)
-
-    const result = updateSettingsSchema.safeParse(newData)
-    if (result.success) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }))
-      mutate({ [field]: value || null })
-    } else {
-      const fieldError = result.error.issues.find((e) => e.path[0] === field)
-      if (fieldError) {
-        setErrors((prev) => ({ ...prev, [field]: fieldError.message }))
-      }
-    }
+  const handleFieldChange = (field: keyof SettingsForm, value: string | null) => {
+    mutate({ [field]: value || null })
   }
 
   if (isLoading) {
@@ -77,8 +70,13 @@ export function SettingsPage() {
       <div className="h-32"></div>
       <div className="px-4 py-4 space-y-6">
         <div className="flex items-center justify-between">
-          {/* <h2 className="text-lg font-[550] tracking-tight">Settings</h2> */}
-          <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width='48' height='48'>
+          <svg
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="48"
+            height="48"
+          >
             {' '}
             <path
               d="M4 5h16v2H4V5zm0 12H2V7h2v10zm16 0v2H4v-2h16zm0 0h2V7h-2v10zm-2-8h-4v6h4V9z"
@@ -87,77 +85,84 @@ export function SettingsPage() {
           </svg>
           <SaveIndicator status={saveStatus} />
         </div>
-        <div className="flex items-start gap-2">
-          <SettingsField
-            id="preferredName"
-            label="Preferred Name"
-            value={formData.preferredName}
-            onChange={(value) => validateAndSave('preferredName', value)}
-            error={errors.preferredName}
-            placeholder="Enter your name"
-          />
 
-          <div className="space-y-1.5">
-            <Label className="mb-2 text-xs">API Provider</Label>
-            <Select
-              value={formData.apiKeyType || ''}
-              onValueChange={(value) => validateAndSave('apiKeyType', value || null)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select provider" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="openrouter">OpenRouter</SelectItem>
-                <SelectItem value="anthropic">Anthropic</SelectItem>
-              </SelectContent>
-            </Select>
+        <Form {...form}>
+          <div className="flex items-start gap-2">
+            <FormField
+              control={form.control}
+              name="preferredName"
+              render={({ field }) => (
+                <FormItem className="flex-grow">
+                  <FormLabel className="text-xs">Preferred Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      value={field.value || ''}
+                      onChange={(e) => {
+                        field.onChange(e.target.value)
+                        handleFieldChange('preferredName', e.target.value)
+                      }}
+                      placeholder="Enter your name"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="apiKeyType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs">API Provider</FormLabel>
+                  <Select
+                    value={field.value || ''}
+                    onValueChange={(value) => {
+                      field.onChange(value || null)
+                      handleFieldChange('apiKeyType', value || null)
+                    }}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select provider" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="openrouter">OpenRouter</SelectItem>
+                      <SelectItem value="anthropic">Anthropic</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
-        </div>
 
-        <SettingsField
-          id="apiKey"
-          label="API Key"
-          type="password"
-          value={formData.apiKey || ''}
-          onChange={(value) => validateAndSave('apiKey', value)}
-          error={errors.apiKey}
-          placeholder="Enter your API key"
-        />
+          <FormField
+            control={form.control}
+            name="apiKey"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs">API Key</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    value={field.value || ''}
+                    onChange={(e) => {
+                      field.onChange(e.target.value)
+                      handleFieldChange('apiKey', e.target.value)
+                    }}
+                    placeholder="Enter your API key"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </Form>
       </div>
-    </div>
-  )
-}
-
-function SettingsField({
-  id,
-  label,
-  type = 'text',
-  value,
-  onChange,
-  error,
-  placeholder
-}: {
-  id: string
-  label: string
-  type?: string
-  value: string
-  onChange: (value: string) => void
-  error?: string
-  placeholder: string
-}) {
-  return (
-    <div className="space-y-1.5 flex-grow">
-      <Label htmlFor={id} className="mb-2 text-xs">
-        {label}
-      </Label>
-      <Input
-        id={id}
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-      />
-      {error && <p className="text-xs text-destructive">{error}</p>}
     </div>
   )
 }
