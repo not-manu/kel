@@ -22,7 +22,7 @@ export const updateSettingsSchema = z.object({
   preferredName: z.string().min(1, 'Preferred name is required').max(100).optional(),
   apiKey: z.string().min(1).max(500).nullable().optional(),
   apiKeyType: z.enum(apiKeyTypeEnum).nullable().optional(),
-  selectedModel: z.enum(SupportedModels),
+  selectedModel: z.enum(SupportedModels).optional(),
 })
 
 // TypeScript types
