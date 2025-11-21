@@ -28,11 +28,47 @@ const messageApi = {
   delete: (id) => ipcRenderer.invoke('message:delete', id)
 }
 
+const aiApi = {
+  chat: (request, onData, onFinish, onError) => {
+    return ipcRenderer.invoke('ai:chat', request).then(({ streamId }) => {
+      // Set up listeners for this stream
+      const dataListener = (_event, chunk) => onData(chunk)
+      const finishListener = (_event, result) => {
+        onFinish(result)
+        cleanup()
+      }
+      const errorListener = (_event, error) => {
+        onError(new Error(error))
+        cleanup()
+      }
+
+      const cleanup = () => {
+        ipcRenderer.removeListener(`ai:data:${streamId}`, dataListener)
+        ipcRenderer.removeListener(`ai:finish:${streamId}`, finishListener)
+        ipcRenderer.removeListener(`ai:error:${streamId}`, errorListener)
+      }
+
+      ipcRenderer.on(`ai:data:${streamId}`, dataListener)
+      ipcRenderer.on(`ai:finish:${streamId}`, finishListener)
+      ipcRenderer.on(`ai:error:${streamId}`, errorListener)
+
+      // Return streamId and cancel function
+      const cancel = () => {
+        ipcRenderer.invoke('ai:cancel', streamId)
+        cleanup()
+      }
+
+      return { streamId, cancel }
+    })
+  }
+}
+
 const api = {
   settings: settingsApi,
   folders: foldersApi,
   chat: chatApi,
-  message: messageApi
+  message: messageApi,
+  ai: aiApi
 }
 
 export function exposeApi() {
