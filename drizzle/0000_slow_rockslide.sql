@@ -3,6 +3,7 @@ CREATE TABLE `settings` (
 	`preferred_name` text NOT NULL,
 	`api_key` text,
 	`api_key_type` text,
+	`selected_model` text DEFAULT 'anthropic/claude-haiku-4.5' NOT NULL,
 	`created_at` integer,
 	`updated_at` integer
 );

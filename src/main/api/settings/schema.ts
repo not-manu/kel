@@ -1,7 +1,8 @@
-import { z } from 'zod'
 import type { InferSelectModel } from 'drizzle-orm'
-import { apiKeyTypeEnum } from '../../db/tables/settings'
+import { z } from 'zod'
+import { SupportedModels } from '../../api/ai/schema'
 import type { settings } from '../../db/tables/settings'
+import { apiKeyTypeEnum } from '../../db/tables/settings'
 
 // Inferred type from database schema
 export type Settings = InferSelectModel<typeof settings>
@@ -12,6 +13,7 @@ export const settingsSchema = z.object({
   preferredName: z.string().min(1, 'Preferred name is required').max(100),
   apiKey: z.string().min(1).max(500).nullable(),
   apiKeyType: z.enum(apiKeyTypeEnum).nullable(),
+  selectedModel: z.enum(SupportedModels).nullable(),
   createdAt: z.date().nullable(),
   updatedAt: z.date().nullable()
 })
@@ -19,7 +21,8 @@ export const settingsSchema = z.object({
 export const updateSettingsSchema = z.object({
   preferredName: z.string().min(1, 'Preferred name is required').max(100).optional(),
   apiKey: z.string().min(1).max(500).nullable().optional(),
-  apiKeyType: z.enum(apiKeyTypeEnum).nullable().optional()
+  apiKeyType: z.enum(apiKeyTypeEnum).nullable().optional(),
+  selectedModel: z.enum(SupportedModels),
 })
 
 // TypeScript types

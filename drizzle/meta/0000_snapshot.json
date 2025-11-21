@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "40c17964-874f-4042-bcaf-76d0b9c7d2e9",
+  "id": "e3651c79-19ef-405a-8564-3806ffafe2e2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "settings": {
@@ -35,6 +35,14 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "selected_model": {
+          "name": "selected_model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'anthropic/claude-haiku-4.5'"
         },
         "created_at": {
           "name": "created_at",
