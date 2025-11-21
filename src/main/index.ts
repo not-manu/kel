@@ -95,10 +95,11 @@ function toggleWindow(): void {
 
   if (mainWindow.isVisible()) {
     mainWindow.hide()
-    // On macOS, hide() automatically restores focus to the previous app
-    // On other platforms, we need to explicitly handle this
-    if (process.platform !== 'darwin') {
-      // Blur the window to return focus to previous application
+    // On macOS, use app.hide() to properly restore focus to the previous application
+    if (process.platform === 'darwin') {
+      app.hide()
+    } else {
+      // On other platforms, blur the window to return focus to previous application
       mainWindow.blur()
     }
   } else {
