@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -45,21 +45,20 @@
   --font-serif: var(--font-serif);
   --font-display: var(--font-display);
 
-  --color-f-black: #100F0F;
-  --color-f-950: #1C1B1A;
+  --color-f-black: #100f0f;
+  --color-f-950: #1c1b1a;
   --color-f-900: #282726;
   --color-f-850: #343331;
-  --color-f-800: #403E3C;
+  --color-f-800: #403e3c;
   --color-f-700: #575653;
-  --color-f-600: #6F6E69;
+  --color-f-600: #6f6e69;
   --color-f-500: #878580;
-  --color-f-300: #B7B5AC;
-  --color-f-200: #CECDC3;
-  --color-f-150: #DAD8CE;
-  --color-f-100: #E6E4D9;
-  --color-f-50: #F2F0E5;
-  --color-f-paper: #FFFCF0;
-
+  --color-f-300: #b7b5ac;
+  --color-f-200: #cecdc3;
+  --color-f-150: #dad8ce;
+  --color-f-100: #e6e4d9;
+  --color-f-50: #f2f0e5;
+  --color-f-paper: #fffcf0;
 
   /* Custom Classes */
   --breakpoint-xs: 400px;
@@ -99,9 +98,9 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --font-serif: "EB Garamond", serif;
-  --font-sans: "Geist", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-serif: 'EB Garamond', serif;
+  --font-sans: 'Geist', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 .dark {
@@ -122,7 +121,7 @@
   --destructive: rgb(209, 77, 65);
   --success: #879a39;
   --border: oklch(1 0 0 / 10%);
-  --input: #FFFCF033;
+  --input: #fffcf033;
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
@@ -150,8 +149,8 @@
 }
 
 *::selection {
-  background: #00cc9937;
-  color: #007763fd;
+  background: #c15f3c37;
+  color: #c15f3cfd;
 }
 
 .shaded {

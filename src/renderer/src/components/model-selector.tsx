@@ -34,7 +34,7 @@ export function ModelSelector() {
 
   return (
     <Select value={selectedModel} onValueChange={handleValueChange}>
-      <SelectTrigger size="xs" className='border-none dark:bg-transparent ml-[-4px] mb-[-2px]'>
+      <SelectTrigger size="xs" className='border-none dark:bg-input/50 ml-[-4px] mb-[-2px]'>
         <SelectValue>
           {modelOptions.map((option) => {
             if (option.value === selectedModel) {
