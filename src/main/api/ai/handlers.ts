@@ -39,7 +39,7 @@ export function registerAiHandlers() {
         throw new Error(`Unsupported API provider: ${apiKeyType}`)
       }
 
-      const model = validated.model || 'anthropic/claude-3.5-sonnet'
+      const model = validated.model || 'anthropic/claude-haiku-4.5'
 
       // Start streaming
       const result = await streamText({
