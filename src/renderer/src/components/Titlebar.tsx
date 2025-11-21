@@ -40,6 +40,7 @@ export function Titlebar() {
           <button
             onClick={handleBack}
             disabled={!canGoBack}
+            tabIndex={-1}
             className="hover:bg-f-850 group rounded p-0.5 disabled:opacity-50 disabled:cursor-not-allowed group"
             aria-label="Go back"
           >
@@ -48,6 +49,7 @@ export function Titlebar() {
           <button
             onClick={handleForward}
             disabled={!canGoForward}
+            tabIndex={-1}
             className="hover:bg-f-850 group rounded p-0.5 disabled:opacity-50 disabled:cursor-not-allowed group"
             aria-label="Go forward"
           >
@@ -56,7 +58,12 @@ export function Titlebar() {
         </div>
         {title}
         <div className="absolute right-1 p-0.5 hover:bg-f-850 group rounded">
-          <button onClick={handleSettings} className="group-hover:text-f-300 flex" aria-label="Settings">
+          <button
+            onClick={handleSettings}
+            tabIndex={-1}
+            className="group-hover:text-f-300 flex"
+            aria-label="Settings"
+          >
             <CogIcon className="w-3.5 h-3.5" />
           </button>
         </div>

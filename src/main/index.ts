@@ -95,6 +95,12 @@ function toggleWindow(): void {
 
   if (mainWindow.isVisible()) {
     mainWindow.hide()
+    // On macOS, hide() automatically restores focus to the previous app
+    // On other platforms, we need to explicitly handle this
+    if (process.platform !== 'darwin') {
+      // Blur the window to return focus to previous application
+      mainWindow.blur()
+    }
   } else {
     // Reposition window in case screen configuration changed
     const primaryDisplay = screen.getPrimaryDisplay()
@@ -105,7 +111,8 @@ function toggleWindow(): void {
     const y = displayY // Use the display's y offset (accounts for menu bar)
 
     mainWindow.setPosition(x, y)
-    mainWindow.showInactive() // Show without taking focus
+    mainWindow.show() // Show and take focus
+    mainWindow.focus() // Explicitly focus the window
   }
 }
 
