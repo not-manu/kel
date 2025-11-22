@@ -51,6 +51,7 @@ export function ChatPage() {
             </div>
           )
         )}
+        <div className="my-8"></div>
       </div>
       <ComposeMessage chatId={Number(id)} />
     </div>
