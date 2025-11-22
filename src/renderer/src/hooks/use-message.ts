@@ -1,15 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import type { InferElectron } from '@renderer/lib/types'
 import type { StreamEvent } from '@shared/schemas'
 
-export type Message = InferElectron<typeof window.api.message.listByChatId>
+type Messages = InferElectron<typeof window.api.message.listByChatId>
+export type Message = Messages extends Array<infer T> ? T : never
 export type CreateMessageData = Parameters<typeof window.api.message.create>[0]
 
 export const messageKey = ['message'] as const
 
 export function useMessages(chatId: number) {
-  const [streamBuffer, setStreamBuffer] = useState<string>('')
+  const queryClient = useQueryClient()
 
   const query = useQuery({
     queryKey: [messageKey, chatId],
@@ -21,18 +22,39 @@ export function useMessages(chatId: number) {
     const unsubscribe = window.api.ai.onStream((event: StreamEvent) => {
       if (event.chatId !== chatId) return
 
-      const { chunk } = event
-      if (chunk.type === 'text-delta') {
-        setStreamBuffer((prev) => prev + chunk.text)
-      } else if (chunk.type === 'finish' || chunk.type === 'error') {
-        setStreamBuffer('')
-      }
+      queryClient.setQueryData([messageKey, chatId], (old: Message[] = []) => {
+        const { chunk } = event
+
+        if (chunk.type === 'text-delta') {
+          const messages = old as Message[]
+          const lastMsg = messages[messages.length - 1]
+          if (lastMsg && lastMsg.role === 'assistant' && !lastMsg.id) {
+            return [...messages.slice(0, -1), { ...lastMsg, content: lastMsg.content + chunk.text }]
+          }
+          return [
+            ...messages,
+            {
+              role: 'assistant' as const,
+              content: chunk.text,
+              chatId,
+              createdAt: new Date(),
+              id: 0
+            }
+          ]
+        }
+
+        if (chunk.type === 'finish') {
+          queryClient.invalidateQueries({ queryKey: [messageKey, chatId] })
+        }
+
+        return old
+      })
     })
 
     return unsubscribe
-  }, [chatId])
+  }, [chatId, queryClient])
 
-  return { ...query, streamBuffer }
+  return query
 }
 
 export function useCreateMessage() {
