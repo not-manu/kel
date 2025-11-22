@@ -26,9 +26,8 @@ export function sendStreamEvent(event: StreamEvent) {
 }
 
 async function captureDesktop(): Promise<string> {
-  const wasVisible = mainWindow?.isVisible()
-
-  if (wasVisible) mainWindow?.hide()
+  // Set the window to be ignored in screen captures
+  mainWindow?.setContentProtection(true)
   await new Promise((resolve) => setTimeout(resolve, 100))
 
   const sources = await desktopCapturer.getSources({
@@ -40,7 +39,8 @@ async function captureDesktop(): Promise<string> {
   await mkdir('local', { recursive: true })
   await writeFile(join('local', `screenshot-${Date.now()}.png`), screenshot)
 
-  if (wasVisible) mainWindow?.show()
+  // Re-enable the window to appear in screen captures
+  mainWindow?.setContentProtection(false)
 
   return screenshot.toString('base64')
 }
