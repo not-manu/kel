@@ -8,13 +8,26 @@ export function ComposeMessage() {
   const [prompt, setPrompt] = useState('')
 
   const handleSend = async () => {
-    // TODO: Implement message sending logic
+    if (!prompt.trim()) return
+
+    try {
+      const result = await window.api.ai.new({ prompt: prompt.trim() })
+      console.log('Chat created with ID:', result.chatId)
+
+      // Clear the input after successful send
+      setPrompt('')
+
+      // TODO: Navigate to the chat or update UI as needed
+    } catch (error) {
+      console.error('Failed to create chat:', error)
+      // TODO: Show error notification to user
+    }
   }
 
   return (
     <div>
       <InputGroup
-        className="group border-t border-x-0 border-b-0 min-h-48 rounded-none dark:bg-transparent has-[[data-slot=input-group-control]:focus-visible]:bg-input/15 [[data-slot=input-group-control]:focus-visible]:border-t-f-500
+        className="group border-y border-x-0 min-h-48 rounded-none dark:bg-transparent has-[[data-slot=input-group-control]:focus-visible]:bg-input/15 
       has-[[data-slot=input-group-control]:focus-visible]:ring-0
       "
       >
@@ -32,7 +45,7 @@ export function ComposeMessage() {
             <Button
               onClick={handleSend}
               size="sm"
-              className="text-xs aspect-square w-7 h-7 mr-[-4px] mb-[-4px] bg-[#c15f3c] text-white"
+              className="text-xs aspect-square w-7 h-7 mr-[-4px] mb-[-4px] bg-[#c15f3c] hover:bg-[#eb906e] text-white"
               disabled={!prompt.trim()}
             >
               <ArrowUpIcon />

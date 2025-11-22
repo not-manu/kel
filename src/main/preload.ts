@@ -3,6 +3,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 import type { SettingsApi } from './api/settings/schema'
 import type { ChatApi } from './api/chat/schema'
 import type { MessageApi } from './api/message/schema'
+import type { AiApi } from './api/ai/schema'
 
 const settingsApi: SettingsApi = {
   get: () => ipcRenderer.invoke('settings:get'),
@@ -23,10 +24,15 @@ const messageApi: MessageApi = {
   delete: (id) => ipcRenderer.invoke('message:delete', id)
 }
 
+const aiApi: AiApi = {
+  new: (data) => ipcRenderer.invoke('chat:new', data)
+}
+
 const api = {
   settings: settingsApi,
   chat: chatApi,
-  message: messageApi
+  message: messageApi,
+  ai: aiApi
 }
 
 export function exposeApi() {
