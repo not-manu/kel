@@ -46,7 +46,7 @@ export function ChatPage() {
             </div>
           ) : (
             <div key={message.id} className="mb-4 text-sm">
-              <MessageContent content={message.content} className="whitespace-pre-wrap" />
+              <MessageContent content={message.content} />
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => handleCopyMessage(message.content)}

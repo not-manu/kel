@@ -16,14 +16,19 @@ export function MessageContent({ content, className }: MessageContentProps) {
           h2: ({ children }) => <h2 className="font-semibold mb-2 mt-4 first:mt-0">{children}</h2>,
           h3: ({ children }) => <h3 className="font-semibold mb-2 mt-4 first:mt-0">{children}</h3>,
           ul: ({ children }) => (
-            <ul className="list-disc list-outside pl-4 mb-2 marker:text-f-500">{children}</ul>
+            <ul className="list-disc list-outside pl-4 mb-2 space-y-1 marker:text-f-500">
+              {children}
+            </ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal list-outside pl-4 mb-2 marker:text-f-500">{children}</ol>
+            <ol className="list-decimal list-outside pl-4 mb-2 space-y-1 marker:text-f-500">
+              {children}
+            </ol>
           ),
+          li: ({ children }) => <li className="leading-relaxed">{children}</li>,
           code: ({ className, children }) =>
             className ? (
-              <code className="block bg-f-900 rounded px-2 py-1.5 my-2 overflow-x-auto">
+              <code className="block bg-f-900 rounded px-2 py-1.5 my-2 overflow-x-auto ">
                 {children}
               </code>
             ) : (
