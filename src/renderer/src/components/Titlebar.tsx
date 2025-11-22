@@ -56,7 +56,7 @@ export function Titlebar() {
             <ArrowRight className="w-3.5 h-3.5 group-hover:text-f-300" />
           </button>
         </div>
-        {title}
+        <div className='max-w-48 truncate whitespace-nowrap overflow-hidden'>{title}</div>
         <div className="absolute right-1 p-0.5 hover:bg-f-850 group rounded">
           <button
             onClick={handleSettings}
