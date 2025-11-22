@@ -1,4 +1,7 @@
 import Markdown from 'react-markdown'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import 'katex/dist/katex.min.css'
 import { cn } from '@renderer/lib/utils'
 
 interface MessageContentProps {
@@ -10,6 +13,8 @@ export function MessageContent({ content, className }: MessageContentProps) {
   return (
     <div className={cn('prose prose-sm prose-invert max-w-none', className)}>
       <Markdown
+        remarkPlugins={[remarkMath]}
+        rehypePlugins={[rehypeKatex]}
         components={{
           p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
           h1: ({ children }) => <h1 className="font-semibold mb-2 mt-4 first:mt-0">{children}</h1>,
