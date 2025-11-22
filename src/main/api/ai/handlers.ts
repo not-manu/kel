@@ -58,6 +58,7 @@ async function processAiStream(chatId: number) {
 
   const result = streamText({
     model: openrouter(selectedModel),
+    system: 'You are Kel, an AI assistant who sees the world through the eyes of your user. Be helpful, creative, clever, and very friendly.',
     messages: messages.map((m) => ({ role: m.role, content: m.content })),
     experimental_transform: smoothStream({
       delayInMs: 50
