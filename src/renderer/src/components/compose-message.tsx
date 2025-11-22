@@ -1,27 +1,32 @@
 import { ArrowUpIcon } from 'lucide-react'
 import { useState } from 'react'
+import { useCreateNewChat } from '@renderer/hooks/use-ai'
 import { ModelSelector } from './model-selector'
 import { Button } from './ui/button'
 import { InputGroup, InputGroupAddon, InputGroupTextarea } from './ui/input-group'
 
 export function ComposeMessage() {
   const [prompt, setPrompt] = useState('')
+  const createNewChat = useCreateNewChat()
 
   const handleSend = async () => {
     if (!prompt.trim()) return
 
-    try {
-      const result = await window.api.ai.new({ prompt: prompt.trim() })
-      console.log('Chat created with ID:', result.chatId)
-
-      // Clear the input after successful send
-      setPrompt('')
-
-      // TODO: Navigate to the chat or update UI as needed
-    } catch (error) {
-      console.error('Failed to create chat:', error)
-      // TODO: Show error notification to user
-    }
+    createNewChat.mutate(
+      { prompt: prompt.trim() },
+      {
+        onSuccess: (result) => {
+          console.log('Chat created with ID:', result.chatId)
+          // Clear the input after successful send
+          setPrompt('')
+          // TODO: Navigate to the chat or update UI as needed
+        },
+        onError: (error) => {
+          console.error('Failed to create chat:', error)
+          // TODO: Show error notification to user
+        }
+      }
+    )
   }
 
   return (
@@ -46,7 +51,7 @@ export function ComposeMessage() {
               onClick={handleSend}
               size="sm"
               className="text-xs aspect-square w-7 h-7 mr-[-4px] mb-[-4px] bg-[#c15f3c] hover:bg-[#d0704d] text-white"
-              disabled={!prompt.trim()}
+              disabled={!prompt.trim() || createNewChat.isPending}
             >
               <ArrowUpIcon />
             </Button>
