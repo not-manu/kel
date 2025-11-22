@@ -25,11 +25,11 @@ export function RecentChats() {
         <Link
           to={`/chat/${chat.id}`}
           key={chat.id}
-          className="py-1.5 text-f-300 hover:text-f-paper duration-200 flex items-center justify-between gap-2"
+          className="py-1.5 text-f-300 hover:text-foreground flex items-center justify-between gap-4"
           tabIndex={-1}
         >
           <div className="whitespace-nowrap truncate flex-1">{chat.title || 'Untitled Chat'}</div>
-          <div className="text-f-500 text-[10px] shrink-0">{dayjs(chat.updatedAt).fromNow()}</div>
+          <div className="text-f-700 text-[10px] shrink-0">{dayjs(chat.updatedAt).fromNow()}</div>
         </Link>
       ))}
     </div>
