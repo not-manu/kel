@@ -1,7 +1,7 @@
-import { ArrowUpIcon } from 'lucide-react'
+import { ArrowUpIcon, SquareIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useCreateNewChat } from '@renderer/hooks/use-ai'
+import { useCreateNewChat, useAiStreaming } from '@renderer/hooks/use-ai'
 import { ModelSelector } from './model-selector'
 import { Button } from './ui/button'
 import { InputGroup, InputGroupAddon, InputGroupTextarea } from './ui/input-group'
@@ -14,6 +14,7 @@ export function ComposeMessage({ chatId }: ComposeMessageProps) {
   const [prompt, setPrompt] = useState('')
   const navigate = useNavigate()
   const createNewChat = useCreateNewChat()
+  const { isStreaming, abort } = useAiStreaming(chatId)
 
   const handleSend = async () => {
     if (!prompt.trim()) return
@@ -33,7 +34,6 @@ export function ComposeMessage({ chatId }: ComposeMessageProps) {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // Check for Command+Enter (Mac) or Ctrl+Enter (Windows/Linux)
     if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
       e.preventDefault()
       handleSend()
@@ -60,12 +60,17 @@ export function ComposeMessage({ chatId }: ComposeMessageProps) {
             <ModelSelector />
             <div className="flex-grow"></div>
             <Button
-              onClick={handleSend}
+              onClick={isStreaming ? abort : handleSend}
               size="sm"
-              className="text-xs aspect-square w-7 h-7 mr-[-4px] mb-[-4px] bg-[#c15f3c] hover:bg-[#d0704d] text-white"
-              disabled={!prompt.trim() || createNewChat.isPending}
+              variant={isStreaming ? 'secondary' : 'default'}
+              className={
+                isStreaming
+                  ? 'text-xs aspect-square w-7 h-7 mr-[-4px] mb-[-4px]'
+                  : 'text-xs aspect-square w-7 h-7 mr-[-4px] mb-[-4px] bg-[#c15f3c] hover:bg-[#d0704d] text-white'
+              }
+              disabled={!isStreaming && (!prompt.trim() || createNewChat.isPending)}
             >
-              <ArrowUpIcon />
+              {isStreaming ? <SquareIcon className="size-3" /> : <ArrowUpIcon />}
             </Button>
           </div>
         </InputGroupAddon>
