@@ -1,5 +1,7 @@
-import { ipcMain, type BrowserWindow } from 'electron'
+import { ipcMain, type BrowserWindow, desktopCapturer } from 'electron'
 import { eq } from 'drizzle-orm'
+import { writeFile, mkdir } from 'fs/promises'
+import { join } from 'path'
 import { db } from '../../db'
 import { chat } from '../../db/tables/chat'
 import { message } from '../../db/tables/message'
@@ -21,6 +23,26 @@ export function setMainWindow(window: BrowserWindow) {
 
 export function sendStreamEvent(event: StreamEvent) {
   mainWindow?.webContents.send('chat:stream', event)
+}
+
+async function captureDesktop(): Promise<string> {
+  const wasVisible = mainWindow?.isVisible()
+
+  if (wasVisible) mainWindow?.hide()
+  await new Promise((resolve) => setTimeout(resolve, 100))
+
+  const sources = await desktopCapturer.getSources({
+    types: ['screen'],
+    thumbnailSize: { width: 1920, height: 1080 }
+  })
+  const screenshot = sources[0].thumbnail.toPNG()
+
+  await mkdir('local', { recursive: true })
+  await writeFile(join('local', `screenshot-${Date.now()}.png`), screenshot)
+
+  if (wasVisible) mainWindow?.show()
+
+  return screenshot.toString('base64')
 }
 
 async function createNewChat(prompt: string) {
@@ -53,13 +75,28 @@ async function processAiStream(chatId: number) {
     .where(eq(message.chatId, chatId))
     .orderBy(message.createdAt)
 
-  // Create a new AbortController for this stream
+  const screenshot = await captureDesktop()
+
+  const formattedMessages = messages.map((m) => {
+    if (m.role === 'user') {
+      return {
+        role: m.role,
+        content: [
+          { type: 'text' as const, text: m.content },
+          { type: 'image' as const, image: screenshot }
+        ]
+      }
+    }
+    return { role: m.role, content: m.content }
+  })
+
   currentAbortController = new AbortController()
 
   const result = streamText({
     model: openrouter(selectedModel),
-    system: 'You are Kel, an AI assistant who sees the world through the eyes of your user\'s desktop. Be helpful, creative, clever, and very friendly.',
-    messages: messages.map((m) => ({ role: m.role, content: m.content })),
+    system:
+      "You are Kel, an AI assistant who sees the world through the eyes of your user's desktop. Be helpful, creative, clever, and very friendly.",
+    messages: formattedMessages,
     experimental_transform: smoothStream({
       delayInMs: 50
     }),
