@@ -29,6 +29,14 @@ export function ComposeMessage() {
     )
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Check for Command+Enter (Mac) or Ctrl+Enter (Windows/Linux)
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+      e.preventDefault()
+      handleSend()
+    }
+  }
+
   return (
     <div>
       <InputGroup
@@ -40,6 +48,7 @@ export function ComposeMessage() {
           placeholder="Type your message..."
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
+          onKeyDown={handleKeyDown}
           rows={3}
           autoFocus
         />

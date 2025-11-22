@@ -8,11 +8,15 @@ export function registerAiHandlers() {
   ipcMain.handle('chat:new', async (_event, data: CreateChatNewData): Promise<ChatNewResponse> => {
     const validated = createChatNewSchema.parse(data)
 
-    // Create a new chat with a default title (can be updated later)
+    // Use the first 150 characters of the prompt as the title
+    const title =
+      validated.prompt.length > 150 ? validated.prompt.substring(0, 150) + '...' : validated.prompt
+
+    // Create a new chat with the truncated prompt as title
     const chatResult = await db
       .insert(chat)
       .values({
-        title: 'New Chat'
+        title
       })
       .returning()
 

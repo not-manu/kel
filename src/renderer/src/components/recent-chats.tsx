@@ -26,6 +26,7 @@ export function RecentChats() {
           to={`/chat/${chat.id}`}
           key={chat.id}
           className="py-1.5 text-f-300 hover:text-f-paper duration-200 flex items-center justify-between gap-2"
+          tabIndex={-1}
         >
           <div className="whitespace-nowrap truncate flex-1">{chat.title || 'Untitled Chat'}</div>
           <div className="text-f-500 text-[10px] shrink-0">{dayjs(chat.updatedAt).fromNow()}</div>
