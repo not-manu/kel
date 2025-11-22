@@ -9,7 +9,8 @@ export type SupportedModel = (typeof SupportedModels)[number]
 
 // Zod schemas for validation
 export const createChatNewSchema = z.object({
-  prompt: z.string().min(1, 'Prompt is required')
+  prompt: z.string().min(1, 'Prompt is required'),
+  chatId: z.number().int().positive().optional()
 })
 
 // TypeScript types

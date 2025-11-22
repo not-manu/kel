@@ -1,4 +1,5 @@
 import { ipcMain, type BrowserWindow } from 'electron'
+import { eq } from 'drizzle-orm'
 import { db } from '../../db'
 import { chat } from '../../db/tables/chat'
 import { message } from '../../db/tables/message'
@@ -42,11 +43,18 @@ async function createNewChat(prompt: string) {
   return newChat.id
 }
 
-async function processAiStream(chatId: number, prompt: string) {
+async function processAiStream(chatId: number) {
   const { openrouter, selectedModel } = await createOpenRouter()
+
+  const messages = await db
+    .select()
+    .from(message)
+    .where(eq(message.chatId, chatId))
+    .orderBy(message.createdAt)
+
   const result = streamText({
     model: openrouter(selectedModel),
-    prompt,
+    messages: messages.map((m) => ({ role: m.role, content: m.content })),
     experimental_transform: smoothStream()
   })
 
@@ -70,9 +78,20 @@ async function processAiStream(chatId: number, prompt: string) {
 export function registerAiHandlers() {
   ipcMain.handle('chat:new', async (_event, data: CreateChatNewData): Promise<ChatNewResponse> => {
     const validated = createChatNewSchema.parse(data)
-    const chatId = await createNewChat(validated.prompt)
 
-    processAiStream(chatId, validated.prompt).catch((error) => {
+    let chatId: number
+    if (validated.chatId) {
+      chatId = validated.chatId
+      await db.insert(message).values({
+        chatId,
+        role: 'user',
+        content: validated.prompt
+      })
+    } else {
+      chatId = await createNewChat(validated.prompt)
+    }
+
+    processAiStream(chatId).catch((error) => {
       console.error('AI stream processing error:', error)
     })
 

@@ -6,7 +6,11 @@ import { ModelSelector } from './model-selector'
 import { Button } from './ui/button'
 import { InputGroup, InputGroupAddon, InputGroupTextarea } from './ui/input-group'
 
-export function ComposeMessage() {
+interface ComposeMessageProps {
+  chatId?: number
+}
+
+export function ComposeMessage({ chatId }: ComposeMessageProps) {
   const [prompt, setPrompt] = useState('')
   const navigate = useNavigate()
   const createNewChat = useCreateNewChat()
@@ -15,11 +19,11 @@ export function ComposeMessage() {
     if (!prompt.trim()) return
 
     createNewChat.mutate(
-      { prompt: prompt.trim() },
+      { prompt: prompt.trim(), chatId },
       {
         onSuccess: (result) => {
           setPrompt('')
-          navigate(`/chat/${result.chatId}`)
+          if (!chatId) navigate(`/chat/${result.chatId}`)
         },
         onError: (error) => {
           console.error('Failed to create chat:', error)
