@@ -28,5 +28,6 @@ export type StreamEvent = {
 // Client-side API interface
 export interface AiApi {
   new: (data: CreateChatNewData) => Promise<ChatNewResponse>
+  abort: () => Promise<void>
   onStream: (callback: (event: StreamEvent) => void) => () => void
 }

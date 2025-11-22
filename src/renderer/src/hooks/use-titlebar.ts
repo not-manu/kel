@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useEffect } from 'react'
 
 interface TitlebarContextType {
   title: string
@@ -14,9 +14,11 @@ export function useTitlebar(options?: { title?: string }) {
     throw new Error('useTitlebar must be used within a TitlebarProvider')
   }
 
-  if (options?.title) {
-    context.setTitle(options.title)
-  }
+  useEffect(() => {
+    if (options?.title) {
+      context.setTitle(options.title)
+    }
+  }, [options?.title, context])
 
   return context
 }
