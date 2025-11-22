@@ -1,7 +1,7 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
-import type { SettingsApi } from './api/settings'
-import type { ChatApi } from './api/chat'
-import type { MessageApi } from './api/message'
+import type { SettingsApi } from './api/settings/schema'
+import type { ChatApi } from './api/chat/schema'
+import type { MessageApi } from './api/message/schema'
 
 declare global {
   interface Window {
