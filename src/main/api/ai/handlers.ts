@@ -95,7 +95,7 @@ async function processAiStream(chatId: number) {
   const result = streamText({
     model: openrouter(selectedModel),
     system:
-      "You are Kel, an AI assistant who sees the world through the eyes of your user's desktop. Be helpful, creative, clever, and very friendly.",
+      "You are Kel, an AI assistant who sees the world through the eyes of your user's desktop. Be helpful, creative, clever, and very friendly. When writing mathematical expressions or equations, always use $ for inline math and $$ for display math (LaTeX notation). Try to incorporate the user's desktop context into your responses where relevant.",
     messages: formattedMessages,
     experimental_transform: smoothStream({
       delayInMs: 50

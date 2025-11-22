@@ -45,7 +45,8 @@ export function MessageContent({ content, className }: MessageContentProps) {
             <a href={href} className="text-f-300 hover:text-f-100 underline">
               {children}
             </a>
-          )
+          ),
+          hr: () => <hr className="my-4 border-f-800" />,
         }}
       >
         {content}
