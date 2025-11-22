@@ -18,6 +18,7 @@ import { registerAllApis } from './api'
 let mainWindow: BrowserWindow | null = null
 let tray: Tray | null = null
 let windowPosition: 'left' | 'right' = 'right' // Start on the right by default
+let isQuitting = false
 
 function createWindow(): void {
   // Get the primary display's work area
@@ -75,12 +76,15 @@ function createWindow(): void {
 
   // Prevent the window from closing (e.g., when pressing Cmd+W)
   // Instead, hide it like the global shortcut does
+  // But allow closing when the app is quitting
   mainWindow.on('close', (event) => {
-    event.preventDefault()
-    mainWindow?.hide()
-    // On macOS, use app.hide() to properly restore focus to the previous application
-    if (process.platform === 'darwin') {
-      app.hide()
+    if (!isQuitting) {
+      event.preventDefault()
+      mainWindow?.hide()
+      // On macOS, use app.hide() to properly restore focus to the previous application
+      if (process.platform === 'darwin') {
+        app.hide()
+      }
     }
   })
 
@@ -169,7 +173,7 @@ function createTray(): void {
     },
     {
       label: 'Cycle Window Position',
-      accelerator: 'ctrl+option+k',
+      accelerator: 'ctrl+j',
       click: () => {
         cycleWindowPosition()
       }
@@ -244,7 +248,7 @@ app.whenReady().then(async () => {
   }
 
   // Register global shortcut Control+L to cycle window position
-  const ret2 = globalShortcut.register('Control+Option+K', () => {
+  const ret2 = globalShortcut.register('Control+J', () => {
     cycleWindowPosition()
   })
 
@@ -264,6 +268,11 @@ app.whenReady().then(async () => {
 app.on('window-all-closed', () => {
   // Don't quit the app - keep it running in the background for the global shortcut
   // Users can quit via Cmd+Q or the menu
+})
+
+// Set flag before quitting to allow window to close
+app.on('before-quit', () => {
+  isQuitting = true
 })
 
 // Clean up global shortcuts when app is quitting
