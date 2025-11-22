@@ -17,15 +17,15 @@ export function ChatPage() {
 
   return (
     <div className="flex flex-col flex-grow overflow-hidden">
-      <div className="h-8"></div>
       <div className="flex-grow overflow-y-auto px-4 flex flex-col gap-2" tabIndex={-1}>
-        {/* <pre className="text-sm whitespace-pre-wrap break-words">
-          {JSON.stringify(messages, null, 2)}
-        </pre> */}
+        <div className="my-0.5"></div>
         {messages?.map((message) =>
           message.role === 'user' ? (
-            <div key={message.id} className="mb-4 flex text-sm gap-2 bg-f-900 py-2 pl-2 pr-3 rounded-lg w-fit">
-              <Avatar className='w-6 h-6 text-xs font-semibold'>
+            <div
+              key={message.id}
+              className="mb-4 flex text-sm gap-2 bg-f-900 py-2 pl-2 pr-3 rounded-lg w-fit"
+            >
+              <Avatar className="w-6 h-6 text-xs font-semibold">
                 <AvatarFallback className="bg-f-paper text-background">
                   {settings?.preferredName[0]}
                 </AvatarFallback>
