@@ -4,11 +4,11 @@ import { useTitlebar } from '@renderer/hooks/use-titlebar'
 import { useParams } from 'react-router-dom'
 import { ComposeMessage } from '@renderer/components/compose-message'
 import { useSettings } from '@renderer/hooks/use-settings'
-import Markdown from 'react-markdown'
 import { Avatar, AvatarFallback } from '@renderer/components/ui/avatar'
 import { useAiStreaming } from '@renderer/hooks/use-ai'
 import { CopyIcon } from 'lucide-react'
 import { cn } from '../../lib/utils'
+import { MessageContent } from '@renderer/components/message-content'
 
 export function ChatPage() {
   const { id } = useParams<{ id: string }>()
@@ -34,13 +34,11 @@ export function ChatPage() {
                   {settings?.preferredName[0]}
                 </AvatarFallback>
               </Avatar>
-              <div className="mt-0.25">
-                <Markdown>{message.content}</Markdown>
-              </div>
+              <MessageContent content={message.content} className="mt-0.25" />
             </div>
           ) : (
-            <div key={message.id} className="mb-4 whitespace-pre-wrap text-sm">
-              <Markdown>{message.content}</Markdown>
+            <div key={message.id} className="mb-4 text-sm">
+              <MessageContent content={message.content} className="whitespace-pre-wrap" />
 
               <div
                 className={cn(
