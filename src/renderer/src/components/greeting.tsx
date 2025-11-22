@@ -37,6 +37,7 @@ export function Greeting() {
             fill="currentColor"
           />{' '}
         </svg>
+        {/* <ClaudeAIIcon className='w-12 h-12'/> */}
       </div>
       <div className="h-6"></div>
       <div className="font-[450] antialiased font-serif text-2xl">
