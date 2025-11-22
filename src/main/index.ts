@@ -73,6 +73,17 @@ function createWindow(): void {
     // Don't show automatically - wait for the global shortcut
   })
 
+  // Prevent the window from closing (e.g., when pressing Cmd+W)
+  // Instead, hide it like the global shortcut does
+  mainWindow.on('close', (event) => {
+    event.preventDefault()
+    mainWindow?.hide()
+    // On macOS, use app.hide() to properly restore focus to the previous application
+    if (process.platform === 'darwin') {
+      app.hide()
+    }
+  })
+
   // Remove blur handler - window will only hide when shortcut is pressed again
   // This matches Raycast behavior where clicking outside doesn't hide the window
 
@@ -165,6 +176,18 @@ function createTray(): void {
     },
     {
       type: 'separator'
+    },
+    {
+      label: 'Close Window',
+      accelerator: 'cmd+w',
+      click: () => {
+        if (mainWindow?.isVisible()) {
+          mainWindow.hide()
+          if (process.platform === 'darwin') {
+            app.hide()
+          }
+        }
+      }
     },
     {
       label: 'Quit',
