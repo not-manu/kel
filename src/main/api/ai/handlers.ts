@@ -9,7 +9,7 @@ import {
   type StreamEvent
 } from './schema'
 import { createOpenRouter } from '../../lib/openrouter'
-import { streamText } from 'ai'
+import { streamText, smoothStream } from 'ai'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -46,7 +46,8 @@ async function processAiStream(chatId: number, prompt: string) {
   const { openrouter, selectedModel } = await createOpenRouter()
   const result = streamText({
     model: openrouter(selectedModel),
-    prompt
+    prompt,
+    experimental_transform: smoothStream()
   })
 
   let fullResponse = ''
