@@ -36,8 +36,9 @@ async function captureDesktop(): Promise<string> {
   })
   const screenshot = sources[0].thumbnail.toPNG()
 
-  await mkdir('local', { recursive: true })
-  await writeFile(join('local', `screenshot-${Date.now()}.png`), screenshot)
+  // For debugging: save screenshot to local folder
+  // await mkdir('local', { recursive: true })
+  // await writeFile(join('local', `screenshot-${Date.now()}.png`), screenshot)
 
   // Re-enable the window to appear in screen captures
   mainWindow?.setContentProtection(false)
