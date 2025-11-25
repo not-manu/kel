@@ -2,7 +2,7 @@
 
 [![Watch the Demo](public/thumbnail-with-yt.png)](https://www.youtube.com/watch?v=MteKGo_oHxo)
 
-> **Note**: This project was created for the Anthropic AI Hackathon in Toronto.
+> **🏆 Winner of the Anthropic AI Hackathon in Toronto!**
 
 Kel is an AI agent desktop application that lives on your computer. Access it instantly with a keyboard shortcut (`Control+K`) — it appears as a sleek sidebar window, ready to assist you with anything you need.
 
@@ -154,11 +154,11 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Acknowledgments
 
-Built for the **Anthropic AI Hackathon in Toronto**
+**🏆 Winner of the Anthropic AI Hackathon in Toronto**
 
 Special thanks to:
 
-- Anthropic for hosting the hackathon
+- Anthropic for hosting the hackathon and recognizing this project
 - The open source community for the amazing tools and libraries
 
 ## Author
